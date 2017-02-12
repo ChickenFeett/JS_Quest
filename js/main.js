@@ -14,30 +14,30 @@ var gTest = ( function () {
 		console.log("Loading ".concat(APP_NAME));
 		var width  = $( window ).width();
 		var height = $( window ).height();
-		gPlayer =  _createNewObject("res/character/player.jpg", "player", 0, 0, 750, 100, 100, 100, 0, 2, 150, N)	
+		gPlayer =  _createNewObject("res/character/player.jpg", "player", 0, 0, 750, 100, 100, 100, 0, 2, 100, N);
 		_spawn(gPlayer);
-		gEnemies[gEnemies.length] = _createNewObject("res/enemy/enemy.gif", "enemy1", 0, 0, 500, 500, 100, 100, 0, 1, 75, N)		
+		gEnemies[gEnemies.length] = _createNewObject("res/enemy/enemy.gif", "enemy1", 0, 0, 500, 500, 100, 100, 0, 1, 75, N);	
 		_spawn(gEnemies[gEnemies.length-1]);
-		gEnemies[gEnemies.length] = _createNewObject("res/enemy/enemy.gif", "enemy2", 0, 0, 750, 1200, 100, 100, 0, 1, 75, N)		
+		gEnemies[gEnemies.length] = _createNewObject("res/enemy/enemy.gif", "enemy2", 0, 0, 750, 1200, 100, 100, 0, 1, 75, N);		
 		_spawn(gEnemies[gEnemies.length-1]);
 	};
 	
 	var _createNewObject = function(imagePath, id, xMomentum, yMomentum, xPos, yPos, height, width, cycle, speed, range, direction){
 		return {
-			imageObj: null,
-			imagePath: imagePath,
-			id: id,
-			xMomentum: 0,
-			yMomentum: 0,
-			xPos: xPos,
-			yPos: yPos,
-			height: 75,
-			width: 75,
-			cycle: 0,
-			speed: speed,
-			range: 100,
-			direction: N
-		};
+			imageObj  : null,
+			imagePath : imagePath,
+			id        : id,
+			xMomentum : yMomentum,
+			yMomentum : xMomentum,
+			xPos      : xPos,
+			yPos      : yPos,
+			height    : height,
+			width     : width,
+			cycle     : cycle,
+			speed     : speed,
+			range     : range,
+			direction : N
+		}; 
 	}
 
 	var _spawn = function(object){
@@ -132,49 +132,7 @@ var gTest = ( function () {
 		keys.sort();
 
 		for (i = 0; i < keys.length; i++){
-
-			_checkCollisionInDirection(object, colliableObjsWithDistanceKey[key[i]], direction);
-
-				// if ( (object.xPos + object.width + object.xMomentum)  > (gCollidableObjs[i].xPos) &&  // o1 right > o2 left 
-				// 	 (object.yPos + object.height + object.yMomentum) > (gCollidableObjs[i].yPos) && // o1 bottom > o2 top 
-				// 	 (object.yPos + object.yMomentum)                 < (gCollidableObjs[i].yPos + gCollidableObjs[i].height) && // o1 top < o2 bottom
-				// 	 (object.xPos + object.xMomentum)                 < (gCollidableObjs[i].xPos + gCollidableObjs[i].width) ){  // o1 left < o2 right                            
-				// 	// find out which side collision is on
-				// 	// right side
-				// 	if ( (object.xPos + object.width + object.xMomentum)  > (gCollidableObjs[i].xPos) ){                              // o1 right > o2 left 
-				// 		if ((object.xPos + object.width)  < (gCollidableObjs[i].xPos)) {                                                // check if there is room to move
-				// 			object.xMomentum = gCollidableObjs[i].xPos - (object.xPos + object.width);                                // adjust momentum accordingly
-				// 		}else{
-				// 			object.xMomentum = 0;													                            // otherwise no room to move; momentum = 0
-				// 		}
-				// 	}
-				// 	if ( (object.yPos + object.height + object.yMomentum) > (gCollidableObjs[i].yPos) ){                              // o1 bottom > o2 top                         
-				// 		if ((object.yPos + object.height)  < (gCollidableObjs[i].yPos)) {                                               // check if there is room to move
-				// 			object.yMomentum = gCollidableObjs[i].yPos - (object.yPos + object.height);                               // adjust momentum accordingly
-				// 		}else{
-				// 			object.yMomentum = 0;													                            // otherwise no room to move; momentum = 0
-				// 		}
-				// 	}
-				// 	if ( (object.yPos + object.yMomentum)                 < (gCollidableObjs[i].yPos + gCollidableObjs[i].height) ){  // o1 top < o2 bottom
-				// 		if ((object.yPos + object.height)  > (gCollidableObjs[i].yPos)) {                                               // check if there is room to move
-				// 			object.yMomentum = gCollidableObjs[i].yPos - (object.yPos + object.height);                               // adjust momentum accordingly
-				// 		}else{
-				// 			object.yMomentum = 0;													                            // otherwise no room to move; momentum = 0
-				// 		}
-				// 	}
-				// 	if ( (object.xPos + object.xMomentum)                 < (gCollidableObjs[i].xPos + gCollidableObjs[i].width) ){   // o1 left < o2 right
-				// 		if ((object.xPos + object.width)  > (gCollidableObjs[i].xPos)) {                                                // check if there is room to move
-				// 			object.xMomentum = gCollidableObjs[i].xPos - (object.xPos + object.width);                                // adjust momentum accordingly
-				// 		}else{
-				// 			object.xMomentum = 0;													                            // otherwise no room to move; momentum = 0
-				// 		}
-				// 	}
-				// }
-
-				// handle collision
-				// if delicate (delicate destroyed, player react)
-				// if hard     (player can't move that direction) (store in gPlayer.collided ? Look at this before move)
-			
+			_checkCollisionInDirection(object, colliableObjsWithDistanceKey[key[i]], direction);			
 		}
 	}
 
@@ -232,14 +190,10 @@ var gTest = ( function () {
 		}
 	}
 	var _checkCollisionInDirection = function(selectObj, targetObj, direction){
-
+		// TBC ~~~~~ !!! 
 		switch (direction){
 			case N:
-				// check top face
-				var i;
-				for (i = selectObj.yMomentum; i < 0 ; i ++){
-					// if ()
-				}
+				// check top face				
 				break;
 			case NE:
 				// check top & right face
