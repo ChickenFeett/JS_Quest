@@ -16,13 +16,29 @@ var gTest = ( function () {
 		var height = $( window ).height();
 		gPlayer =  _createNewObject("res/character/player.jpg", "player", 0, 0, 750, 100, 100, 100, 0, 2, 100, N);
 		_spawn(gPlayer);
-		gEnemies[gEnemies.length] = _createNewObject("res/enemy/enemy.gif", "enemy1", 0, 0, 500, 500, 100, 100, 0, 1, 75, N);	
-		_spawn(gEnemies[gEnemies.length-1]);
-		gEnemies[gEnemies.length] = _createNewObject("res/enemy/enemy.gif", "enemy2", 0, 0, 750, 1200, 100, 100, 0, 1, 75, N);		
-		_spawn(gEnemies[gEnemies.length-1]);
+
+		_spawn(_createNewObject("res/walls/wall.png", "wall", 0, 0, 1000, 0, 100, 100, 0, 0, 0, false) );
+		_spawn(_createNewObject("res/walls/wall.png", "wall", 0, 0, 1000, 100, 100, 100, 0, 0, 0, false));
+		_spawn(_createNewObject("res/walls/wall.png", "wall", 0, 0, 1000, 200, 100, 100, 0, 0, 0, false));
+		_spawn(_createNewObject("res/walls/wall.png", "wall", 0, 0, 1000, 300, 100, 100, 0, 0, 0, false));
+		_spawn(_createNewObject("res/walls/wall.png", "wall", 0, 0, 1000, 400, 100, 100, 0, 0, 0, false));
+		_spawn(_createNewObject("res/walls/wall.png", "wall", 0, 0, 1000, 500, 100, 100, 0, 0, 0, false));
+		_spawn(_createNewObject("res/walls/wall.png", "wall", 0, 0, 1000, 600, 100, 100, 0, 0, 0, false));
+		_spawn(_createNewObject("res/walls/wall.png", "wall", 0, 0, 400, 0, 100, 100, 0, 0, 0, false) );
+		_spawn(_createNewObject("res/walls/wall.png", "wall", 0, 0, 400, 100, 100, 100, 0, 0, 0, false));
+		_spawn(_createNewObject("res/walls/wall.png", "wall", 0, 0, 400, 200, 100, 100, 0, 0, 0, false));
+		_spawn(_createNewObject("res/walls/wall.png", "wall", 0, 0, 400, 300, 100, 100, 0, 0, 0, false));
+		_spawn(_createNewObject("res/walls/wall.png", "wall", 0, 0, 400, 400, 100, 100, 0, 0, 0, false));
+		_spawn(_createNewObject("res/walls/wall.png", "wall", 0, 0, 400, 500, 100, 100, 0, 0, 0, false));
+		_spawn(_createNewObject("res/walls/wall.png", "wall", 0, 0, 400, 600, 100, 100, 0, 0, 0, false));
 	};
 	
 	var _createNewObject = function(imagePath, id, xMomentum, yMomentum, xPos, yPos, height, width, cycle, speed, range, direction){
+		var increment = 1;
+		while ($('#'+id).length){
+			id = id + increment;
+			increment++;
+		}
 		return {
 			imageObj  : null,
 			imagePath : imagePath,
@@ -47,6 +63,7 @@ var gTest = ( function () {
      	object.imageObj.style.left  = object.xPos + 'px'; 
      	object.imageObj.style.right = object.yPos + 'px'; 
      	gCollidableObjs[gCollidableObjs.length] = object; // add newly spawned object to collidable 
+     	_draw(object);
 	}
 	var startLoop = function(){
 		console.log("Preparing main loop");		
@@ -111,115 +128,191 @@ var gTest = ( function () {
 		}
 	}
 
-	var _collision = function(object){
+	var _checkForCollision = function(object){
 		var i;
 		var direction = _determineMovingDirection(object);
 		var colliableObjsWithDistanceKey = {}
-		for (i = 0; i < gCollidableObjs.length; i++){
-			if (gCollidableObjs[i] != object){				
-				// Add all colliable objects except inObj & add to associative array, using absolute distance from inObj as key. Sort by distance & run collision algorithm. Break at first collision.
-				var key = _determineObjectDistanceByPoints(object, gCollidableObjs[i], direction);
-				colliableObjsWithDistanceKey[key] = gCollidableObjs[i];
+		if (direction && gCollidableObjs.length > 0){
+			for (i = 0; i < gCollidableObjs.length; i++){
+				if (gCollidableObjs[i] != object){				
+					// Add all colliable objects except inObj & add to associative array, using absolute distance from inObj as key. Sort by distance & run collision algorithm. Break at first collision.
+					var key = _determineObjectDistanceByPoints(object, gCollidableObjs[i], direction);
+					colliableObjsWithDistanceKey[key] = gCollidableObjs[i];
+				}
 			}
-		}
-		var keys = [];
-		for (key in colliableObjsWithDistanceKey){
-			if (colliableObjsWithDistanceKey.hasOwnProperty(key)){
-				keys.push(key);
+
+			var keys = [];
+			for (key in colliableObjsWithDistanceKey){
+				if (colliableObjsWithDistanceKey.hasOwnProperty(key)){
+					keys.push(key);
+				}
 			}
-		}
 
-		keys.sort();
+			keys.sort(function(a, b) {
+			    return a - b
+			})
+		
+			var objDistanceTravel = Math.sqrt( Math.pow(object.xMomentum, 2) + Math.pow( object.yMomentum, 2) );
+			for (i = 0; i < keys.length; i++){
 
-		for (i = 0; i < keys.length; i++){
-			_checkCollisionInDirection(object, colliableObjsWithDistanceKey[key[i]], direction);			
+				// if (objDistanceTravel < keys[i]){
+				// 	break; // collision not possible.
+				// }
+				// otherwise collision may be possible - let's check!	
+				_checkCollisionInDirection(object, colliableObjsWithDistanceKey[keys[i]], direction);			
+			}
 		}
 	}
 
 	var _determineObjectDistanceByPoints = function(selectObject, targetObject, direction){
 		switch (direction){
 			case N: // check top face against bottom face
-				var yTarget = targetObject.yPox + targetObject.height;
+				var yTarget = targetObject.yPos + targetObject.height;
 				var xTarget = targetObject.xPos + (targetObject.width/2);
-				var ySelect = selectObject.yPox;
+				var ySelect = selectObject.yPos;
 				var xSelect = selectObject.xPos + (selectObject.width/2);
 				break;
 			case NE: // check top right cnr against bottom left cnr
-				var yTarget = targetObject.yPox + targetObject.height;
+				var yTarget = targetObject.yPos + targetObject.height;
 				var xTarget = targetObject.xPos;
-				var ySelect = selectObject.yPox;
+				var ySelect = selectObject.yPos;
 				var xSelect = selectObject.xPos + selectObject.width;				
 				break;
 			case E: // check right face against left face
-				var yTarget = targetObject.yPox + (targetObject.height/2);
+				var yTarget = targetObject.yPos + (targetObject.height/2);
 				var xTarget = targetObject.xPos;
-				var ySelect = selectObject.yPox + (selectObject.height/2);
+				var ySelect = selectObject.yPos + (selectObject.height/2);
 				var xSelect = selectObject.xPos + selectObject.width;				
 				break;
 			case SE: // check bottom right cnr against top left cnr
-				var yTarget = targetObject.yPox;
+				var yTarget = targetObject.yPos;
 				var xTarget = targetObject.xPos;
-				var ySelect = selectObject.yPox + selectObject.height;
+				var ySelect = selectObject.yPos + selectObject.height;
 				var xSelect = selectObject.xPos + selectObject.width;
 				break;
 			case S: // check bottom against top 
-				var yTarget = targetObject.yPox;
+				var yTarget = targetObject.yPos;
 				var xTarget = targetObject.xPos + (targetObject.width/2);
-				var ySelect = selectObject.yPox + selectObject.height;
+				var ySelect = selectObject.yPos + selectObject.height;
 				var xSelect = selectObject.xPos + (selectObject.width/2);
 				break;
 			case SW: // check bottom left cnr against top right cnr
-				var yTarget = targetObject.yPox;
+				var yTarget = targetObject.yPos;
 				var xTarget = targetObject.xPos + targetObject.width;
-				var ySelect = selectObject.yPox + selectObject.height;
+				var ySelect = selectObject.yPos + selectObject.height;
 				var xSelect = selectObject.xPos;
 				break;
 			case W: // check right against left 
-				var yTarget = targetObject.yPox + (targetObject.height/2);
+				var yTarget = targetObject.yPos + (targetObject.height/2);
 				var xTarget = targetObject.xPos + targetObject.width;
-				var ySelect = selectObject.yPox + (selectObject.height/2);
+				var ySelect = selectObject.yPos + (selectObject.height/2);
 				var xSelect = selectObject.xPos;
 				break;
 			case NW: // check top right cnr against bottom left cnr
-				var yTarget = targetObject.yPox + targetObject.height;
+				var yTarget = targetObject.yPos + targetObject.height;
 				var xTarget = targetObject.xPos + targetObject.width;
-				var ySelect = selectObject.yPox
+				var ySelect = selectObject.yPos
 				var xSelect = selectObject.xPos
 				break;
-			return Math.sqrt( Math.pow((xTarget - xSelected), 2) + Math.pow((yTarget - ySelected), 2) );
 		}
+		return Math.sqrt( Math.pow((xTarget - xSelect), 2) + Math.pow((yTarget - ySelect), 2) );
 	}
 	var _checkCollisionInDirection = function(selectObj, targetObj, direction){
-		// TBC ~~~~~ !!! 
+		var collision = false, foundPointOfCollision = false; yMaxMomentum = selectObj.yMomentum, xMaxMomentum = selectObj.xMomentum;
 		switch (direction){
-			case N:
-				// check top face				
+			case N: // negative yMomentum
+				// check top face	
+				// Set momentum adjustifer here
+				for (y = yMaxMomentum; y < 0; y ++){
+					if (_collision(selectObj, targetObj, 0, y)){ collision = true; }
+					else if (collision) { selectObj.yMomentum++; break ;}
+				}	
 				break;
-			case NE:
+			case NE: // negative yMomentum, positive xMomentum
 				// check top & right face
+				for (y = yMaxMomentum; y < 1; y ++){
+					for (x = xMaxMomentum; x > -1; x --){
+						if (_collision(selectObj, targetObj, x, y)){ collision = true; }
+						else if (collision) { foundPointOfCollision = true ; break;}
+					}	
+					if (foundPointOfCollision){ selectObj.yMomentum++; selectObj.xMaxMomentum--; break; }
+				}	
 				break;
-			case E:
+			case E: // positive xMomentum
 				// check right face
+				for (x = xMaxMomentum; x > 0; x --){
+					if (_collision(selectObj, targetObj, x, 0)){ collision = true; }
+					else if (collision) { selectObj.xMaxMomentum--; break ;}
+				}	
 				break;
-			case SE:
+			case SE: // positive yMomentum, positive xMomentum
 				// check bottom & right face
+				for (y = yMaxMomentum; y > -1; y --){
+					for (x = xMaxMomentum; x > -1; x --){
+						if (_collision(selectObj, targetObj, 0, y)){ collision = true; }
+						else if (collision) { foundPointOfCollision = true; break;}
+					}	
+					if (foundPointOfCollision){ selectObj.yMomentum--; selectObj.xMaxMomentum--; break; }
+				}	
 				break;
-			case S:
+			case S: // positive yMomentum
 				// check bottom face
+				for (y = yMaxMomentum; y > 0; y --){
+					if (_collision(selectObj, targetObj, 0, y)){ collision = true; }
+					else if (collision) { selectObj.xMaxMomentum--; break ;}
+				}	
 				break;
-			case SW:
+			case SW: // positive yMomentum, negative xMomentum
 				// check bottom & left face
+				for (y = yMaxMomentum; y > -1; y --){
+					for (x = xMaxMomentum; x < 1; x ++){
+						if (_collision(selectObj, targetObj, x, y)){ collision = true; }
+						else if (collision) { foundPointOfCollision = true ; break;}
+					}	
+					if (foundPointOfCollision){ selectObj.yMomentum--; selectObj.xMaxMomentum++; break; }
+				}	
 				break;
-			case W:
+			case W: // negative xMomentum
 				// check left face
+				for (x = xMaxMomentum; x < 0; x ++){
+					if (_collision(selectObj, targetObj, x, 0)){ collision = true; }
+					else if (collision) { selectObj.xMaxMomentum++; break ;}
+				}	
 				break;
-			case NW:
+			case NW: // negative yMomentum, negative xMomentum
 				// check top & left face
+				for (y = yMaxMomentum; y < 1; y ++){
+					for (x = xMaxMomentum; x < 1; x ++){
+						if (_collision(selectObj, targetObj, x, y)){ collision = true; }
+						else if (collision) { foundPointOfCollision = true ; break;}
+					}	
+					if (foundPointOfCollision){ selectObj.yMomentum--; selectObj.xMaxMomentum--;  break; }
+				}	
 				break;
 		}
-		
+		return collision;
 	}
-
+	var _collision = function(selectObj, targetObj, xMomentum, yMomentum){
+		var sTop   = selectObj.yPos + yMomentum;
+		var sRight = selectObj.xPos + selectObj.width  + xMomentum;
+		var sLeft  = selectObj.xPos + xMomentum;
+		var sBott  = selectObj.yPos + selectObj.height + yMomentum;
+		
+		var tTop   = targetObj.yPos;
+		var tRight = targetObj.xPos + targetObj.width;
+		var tLeft  = targetObj.xPos;
+		var tBott  = targetObj.yPos + targetObj.height;
+		if ( sTop   < tBott  &&  
+			 sRight > tLeft  && 
+			 sLeft  < tRight && 
+			 sBott  > tTop   ){ 
+			console.log("Collision detected!");
+			selectObj.xMomentum = xMomentum; // change momentum to collision
+			selectObj.yMomentum = yMomentum; // change momentum to collision
+			return true;
+		}
+		return false;
+	}
 	// Add momentum, which will lead to movement. 
 	var _applyMomentum = function(object, direction) {
 		if (object.yMomentum < 10 && object.yMomentum > -10){
@@ -249,7 +342,7 @@ var gTest = ( function () {
 		if collision will occur, how much can the moving body move, if at all.
 	*/
 	var _applyMovement = function(object){
-		_collision(object); // check for collision before applying movement
+		_checkForCollision(object); // check for collision before applying movement
 		object.xPos += object.xMomentum;
 		object.yPos += object.yMomentum;
 		if (object.xMomentum < 0) { object.xMomentum ++ ; }

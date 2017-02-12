@@ -29,7 +29,7 @@ class Config {
 					            	"<center>".
 					            		"<h1>".$this->app_name." Maintenance</h1>".
 					            		"<div class='maintenance body'>".
-					            			"<p>".$this->app_name." is currently under maintenance. Please check back later</p>".
+					            			"<p>".$this->app_name." is current.yPos under maintenance. Please check back later</p>".
 					            			"<img src='img/maintenance.gif'>".
 					            		"</div>".
 					            "</body>".
