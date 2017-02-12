@@ -1,16 +1,17 @@
 <?php
 class Config {
 	# Set up variables
-	private $app_name = 'Test';
+	private $app_name;
 	private $html_main;
 	private $html_maintenance;
 	public  $component;
 
 	function __construct() {
+		$this->app_name = 'JS Quest';
 		$this->html_main =	"<html lang='en'>" .
 				            "<head>".
 				                "<meta charset='UTF-8'>".
-				                "<title>".$app_name."</title>".
+				                "<title>".$this->app_name."</title>".
 				                "<link rel='stylesheet' href='css/main.css'>".
 				            "</head>".
 				            "<body>".
@@ -21,14 +22,14 @@ class Config {
 		$this->html_maintenance = "<html lang='en'>" .
 					            "<head>".
 					                "<meta charset='UTF-8'>".
-					                "<title>".$app_name."</title>".
+					                "<title>".$this->app_name."</title>".
 					                "<link rel='stylesheet' href='css/mainentance.css'>".
 					            "</head>".
 					            "<body>".
 					            	"<center>".
-					            		"<h1>".$app_name." Maintenance</h1>".
+					            		"<h1>".$this->app_name." Maintenance</h1>".
 					            		"<div class='maintenance body'>".
-					            			"<p>".$app_name." is currently under maintenance. Please check back later</p>".
+					            			"<p>".$this->app_name." is currently under maintenance. Please check back later</p>".
 					            			"<img src='img/maintenance.gif'>".
 					            		"</div>".
 					            "</body>".
