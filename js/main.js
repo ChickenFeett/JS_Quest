@@ -154,16 +154,23 @@ var gTest = ( function () {
 		
 			var objDistanceTravel = Math.sqrt( Math.pow(object.xMomentum, 2) + Math.pow( object.yMomentum, 2) );
 			for (i = 0; i < keys.length; i++){
-
-				// if (objDistanceTravel < keys[i]){
-				// 	break; // collision not possible.
+				// if (objDistanceTravel < keys[i]){ // uncomment for testing purposes
+				// 	break;
 				// }
-				// otherwise collision may be possible - let's check!	
+
+				// check for collision on objects (sorted by distance)
 				_checkCollisionInDirection(object, colliableObjsWithDistanceKey[keys[i]], direction);			
+				objDistanceTravel = Math.abs(object.xMomentum) + Math.abs(object.yMomentum);
+				if (objDistanceTravel == 0){
+					break;
+				}
+				direction = _determineMovingDirection(object); // update direction (can change from diagonal to vert/horizonal)
 			}
 		}
 	}
 
+	// TODO - refine the algorithm to get absolute accurate distance apart for any given axis (direction). 
+	// First find where the closest x or y point is on the two objects. 
 	var _determineObjectDistanceByPoints = function(selectObject, targetObject, direction){
 		switch (direction){
 			case N: // check top face against bottom face
@@ -218,75 +225,55 @@ var gTest = ( function () {
 		return Math.sqrt( Math.pow((xTarget - xSelect), 2) + Math.pow((yTarget - ySelect), 2) );
 	}
 	var _checkCollisionInDirection = function(selectObj, targetObj, direction){
-		var collision = false, foundPointOfCollision = false; yMaxMomentum = selectObj.yMomentum, xMaxMomentum = selectObj.xMomentum;
+		var x, y, collision = false, foundPointOfCollision = false; yMaxMomentum = selectObj.yMomentum, xMaxMomentum = selectObj.xMomentum;
 		switch (direction){
 			case N: // negative yMomentum
 				// check top face	
 				// Set momentum adjustifer here
-				for (y = yMaxMomentum; y < 0; y ++){
-					if (_collision(selectObj, targetObj, 0, y)){ collision = true; }
-					else if (collision) { selectObj.yMomentum++; break ;}
+				for (y = -1; y >= yMaxMomentum; y--){
+					if (_collision(selectObj, targetObj, 0, y)){ selectObj.yMomentum=y+1; collision = true; break; }
 				}	
 				break;
 			case NE: // negative yMomentum, positive xMomentum
 				// check top & right face
-				for (y = yMaxMomentum; y < 1; y ++){
-					for (x = xMaxMomentum; x > -1; x --){
-						if (_collision(selectObj, targetObj, x, y)){ collision = true; }
-						else if (collision) { foundPointOfCollision = true ; break;}
-					}	
-					if (foundPointOfCollision){ selectObj.yMomentum++; selectObj.xMaxMomentum--; break; }
+				for (x = 1, y = -1; x <= xMaxMomentum, y >= yMaxMomentum; x++, y--){
+					if (_collision(selectObj, targetObj, x, y)){ selectObj.xMomentum=x-1; selectObj.yMomentum=y+1;collision = true;  break;}
 				}	
 				break;
 			case E: // positive xMomentum
 				// check right face
-				for (x = xMaxMomentum; x > 0; x --){
-					if (_collision(selectObj, targetObj, x, 0)){ collision = true; }
-					else if (collision) { selectObj.xMaxMomentum--; break ;}
+				for (x = 1; x <= xMaxMomentum; x++){
+					if (_collision(selectObj, targetObj, x, 0)){ selectObj.xMomentum=x-1; collision = true; break; }
 				}	
 				break;
 			case SE: // positive yMomentum, positive xMomentum
 				// check bottom & right face
-				for (y = yMaxMomentum; y > -1; y --){
-					for (x = xMaxMomentum; x > -1; x --){
-						if (_collision(selectObj, targetObj, 0, y)){ collision = true; }
-						else if (collision) { foundPointOfCollision = true; break;}
-					}	
-					if (foundPointOfCollision){ selectObj.yMomentum--; selectObj.xMaxMomentum--; break; }
+				for (x = 1, y = 1;  x <= xMaxMomentum, y <= yMaxMomentum; x++, y ++){
+					if (_collision(selectObj, targetObj, 0, y)){ selectObj.xMomentum=x-1; selectObj.yMomentum=y-1; collision = true; }				
 				}	
 				break;
 			case S: // positive yMomentum
 				// check bottom face
-				for (y = yMaxMomentum; y > 0; y --){
-					if (_collision(selectObj, targetObj, 0, y)){ collision = true; }
-					else if (collision) { selectObj.xMaxMomentum--; break ;}
+				for (y = 1; y <= yMaxMomentum; y++){
+					if (_collision(selectObj, targetObj, 0, y)){selectObj.yMomentum=y+1;  collision = true; break; }
 				}	
 				break;
 			case SW: // positive yMomentum, negative xMomentum
 				// check bottom & left face
-				for (y = yMaxMomentum; y > -1; y --){
-					for (x = xMaxMomentum; x < 1; x ++){
-						if (_collision(selectObj, targetObj, x, y)){ collision = true; }
-						else if (collision) { foundPointOfCollision = true ; break;}
-					}	
-					if (foundPointOfCollision){ selectObj.yMomentum--; selectObj.xMaxMomentum++; break; }
+				for (x = -1, y = 1;  x >= xMaxMomentum, y <= yMaxMomentum; x--, y++){
+					if (_collision(selectObj, targetObj, x, y)){selectObj.xMomentum=x+1; selectObj.yMomentum=y-1; collision = true; break; }					
 				}	
 				break;
 			case W: // negative xMomentum
 				// check left face
-				for (x = xMaxMomentum; x < 0; x ++){
-					if (_collision(selectObj, targetObj, x, 0)){ collision = true; }
-					else if (collision) { selectObj.xMaxMomentum++; break ;}
+				for (x = -1; x >= xMaxMomentum; x --){
+					if (_collision(selectObj, targetObj, x, 0)){selectObj.xMomentum=x+1;collision = true; break; }
 				}	
 				break;
 			case NW: // negative yMomentum, negative xMomentum
 				// check top & left face
-				for (y = yMaxMomentum; y < 1; y ++){
-					for (x = xMaxMomentum; x < 1; x ++){
-						if (_collision(selectObj, targetObj, x, y)){ collision = true; }
-						else if (collision) { foundPointOfCollision = true ; break;}
-					}	
-					if (foundPointOfCollision){ selectObj.yMomentum--; selectObj.xMaxMomentum--;  break; }
+				for (x = -1, y = -1;  x >= xMaxMomentum, y >= yMaxMomentum;  x--, y--){
+					if (_collision(selectObj, targetObj, x, y)){selectObj.xMomentum=x+1; selectObj.yMomentum=y+1; collision = true; break; }
 				}	
 				break;
 		}
@@ -307,8 +294,6 @@ var gTest = ( function () {
 			 sLeft  < tRight && 
 			 sBott  > tTop   ){ 
 			console.log("Collision detected!");
-			selectObj.xMomentum = xMomentum; // change momentum to collision
-			selectObj.yMomentum = yMomentum; // change momentum to collision
 			return true;
 		}
 		return false;
