@@ -408,4 +408,7 @@ var gTest = ( function () {
 } () );
 
 gTest.init();
-gTest.startLoop();
+console.log($('html').data('testmode'));
+if (! $('html').data('testmode')){ 
+	gTest.startLoop();
+}

@@ -15,8 +15,21 @@ class Config {
 				                "<link rel='stylesheet' href='css/main.css'>".
 				            "</head>".
 				            "<body>".
-				                "<script src='js/jquery-3.1.1.min.js'></script>".
-				                "<script src='js/main.js'></script>".
+				                "<script src='js/lib/jquery-3.1.1.min.js'></script>".
+				                "<script src='js/main/js_quest.js'></script>".
+				            "</body>".
+				        "</html>";
+        $this->html_test =	"<html lang='en' data-testmode='true'>".
+				            "<head>".
+				                "<meta charset='UTF-8'>".
+				                "<title>".$this->app_name."</title>".
+				                "<link rel='stylesheet' href='css/main.css'>".
+				            "</head>".
+				            "<body>".
+				                "<script src='js/lib/jquery-3.1.1.min.js'></script>".
+				                "<script src='js/lib/qunit-2.1.1.js'></script>".
+				                "<script src='js/main/js_quest.js'></script>".
+				                "<script src='js/test/jsq_test.js'></script>".
 				            "</body>".
 				        "</html>";
 		$this->html_maintenance = "<html lang='en'>" .
@@ -37,6 +50,7 @@ class Config {
 		$this->component = array(
 			'maintenance' 		=> false,
 			'html_main'			=> $this->html_main,
+			'html_test'			=> $this->html_test,
 			'html_maintenance' 	=> $this->html_maintenance
 		);
 		
