@@ -8,15 +8,19 @@ QUnit.test( "Player Spawning", function( assert ) {
 // Test spawning walls
 var i;
 for (i = 0; i < gCollidableObjs; i++){
-	QUnit.test( "Player Spawning", function( assert ) {
+	QUnit.test( "Wall Spawning", function( assert ) {
 	  assert.ok( gCollidableObjs[i] != undefined, "Passed!" );
 });
 }
+
 // Test spawning enemies
-
-
 for (i = 0; i < gEnemies; i++){
-	QUnit.test( "Player Spawning", function( assert ) {
+	QUnit.test( "Enemy Spawning", function( assert ) {
 	  assert.ok( gEnemies[i] != undefined, "Passed!" );
 });
 }
+
+// Test collision
+QUnit.test( "Collision", function( assert ) {
+  assert.ok( gPlayer != undefined, "Passed!" );
+});
