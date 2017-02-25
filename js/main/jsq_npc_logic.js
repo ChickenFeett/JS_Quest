@@ -9,7 +9,7 @@ var NPC = ( function () {
 		var i;
 		for (i = 0; i < SM.gEnemies.length; i++){
 			var north = false, east = false, south = false, west = false, direction = false;
-			if      (SM.gPlayer.xPos + (SM.gPlayer.width/2)  <SM.gEnemies[i].xPos + (SM.gEnemies[i].width/2)  - SM.gEnemies[i].range){ // check if enemy in range in positive x direction
+			if      (SM.gPlayer.xPos + (SM.gPlayer.width/2)  < SM.gEnemies[i].xPos + (SM.gEnemies[i].width/2)  - SM.gEnemies[i].range){ // check if enemy in range in positive x direction
 				west = true;
 			}
 			else if (SM.gPlayer.xPos + (SM.gPlayer.width/2)  > SM.gEnemies[i].xPos + (SM.gEnemies[i].width/2)  + SM.gEnemies[i].range){ // check if enemy in range in negative x direction
@@ -22,21 +22,21 @@ var NPC = ( function () {
 				south = true
 			}
 
-			if      (!west && !east && !south &&  north){ direction = N;  }
-			else if (!west &&  east && !south &&  north){ direction = NE; }
-			else if (!west &&  east && !south && !north){ direction = E;  }
-			else if (!west &&  east &&  south && !north){ direction = SE; }
-			else if (!west && !east &&  south && !north){ direction = S;  }
-			else if ( west && !east &&  south && !north){ direction = SW; }
-			else if ( west && !east && !south && !north){ direction = W;  }
-			else if ( west && !east && !south &&  north){ direction = NW; }
+			if      (!west && !east && !south &&  north){ direction = SM.N;  }
+			else if (!west &&  east && !south &&  north){ direction = SM.NE; }
+			else if (!west &&  east && !south && !north){ direction = SM.E;  }
+			else if (!west &&  east &&  south && !north){ direction = SM.SE; }
+			else if (!west && !east &&  south && !north){ direction = SM.S;  }
+			else if ( west && !east &&  south && !north){ direction = SM.SW; }
+			else if ( west && !east && !south && !north){ direction = SM.W;  }
+			else if ( west && !east && !south &&  north){ direction = SM.NW; }
 
 			if (direction){
 				SM.gEnemies[i].direction = direction;				
-				_applyMomentum(SM.gEnemies[i], direction);	
+				Movement.applyMomentum(SM.gEnemies[i], direction);	
 			}			
-			_applyMovement(SM.gEnemies[i]);
-			_draw(SM.gEnemies[i]);
+			Movement.applyMovement(SM.gEnemies[i]);
+			ObjMgmt.draw(SM.gEnemies[i]);
 		}
 	}
 	return {

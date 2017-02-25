@@ -36,8 +36,8 @@ var Movement = ( function () {
 	*/
 	var applyMovement = function(object){
 		Collision.checkForCollision(object); // check for collision before applying movement
-		object.xPos += object.xMomentum;
-		object.yPos += object.yMomentum;
+		object.xPos += parseInt(object.xMomentum/4);
+		object.yPos += parseInt(object.yMomentum/4);
 		if (object.xMomentum < 0) { object.xMomentum ++ ; }
 		if (object.xMomentum > 0) { object.xMomentum -- ; }
 

@@ -27,7 +27,27 @@ const SM = {
 	pa_y_pos: null, //playable area y
 	pa_width: null, //playable area width
 	pa_height: null, //playable area height
-	lights: true
+	lights: true,
+	DEFAULT: {
+		HEIGHT: 100,
+		WIDTH : 100
+	},
+
+	ID_NAME : {
+		WALL  : "wall",
+		GRASS : "grass"
+	},
+	PATH : {
+		WALL  : "img/walls/wall.png",
+		GRASS : "img/floors/grass.png"
+	},
+	MAP_OBJ : { 
+		WALL   : 'w',
+		GRASS  : 'g'
+	},
+	MAP_DATA : {
+		1: "res/map_data/data1"
+	}
 };
 
 

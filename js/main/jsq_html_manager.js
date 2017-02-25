@@ -1,7 +1,7 @@
 var Html = ( function () {
 	const MODULE_NAME = "HTML Manager";
-	const PLAYABLE_AREA_WIDTH = "800px";
-	const PLAYABLE_AREA_HEIGHT = "500px";
+	const PLAYABLE_AREA_WIDTH = "900px";
+	const PLAYABLE_AREA_HEIGHT = "600px";
 
 
 	var init = function(){
@@ -27,10 +27,6 @@ var Html = ( function () {
 		SM.pa_height = SM.pa_y_pos + SM.pa_container.height();
 	};
 
-	var draw = function(object){		
-		object.imageObj.style.left = object.xPos + 'px'; 
-     	object.imageObj.style.top  = object.yPos + 'px'; 
-	}
 
 	var toggleLights = function(){
 		if (SM.lights){
@@ -48,7 +44,6 @@ var Html = ( function () {
 
 	return {
 		init: init,
-		draw: draw,
 		toggleLights: toggleLights
 	};
 

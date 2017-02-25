@@ -5,15 +5,17 @@ var JSQ_Main = ( function () {
 
 	var init = function(){
 		console.log("Loading ".concat(SM.APP_NAME));
-
 		_loadEventHandlers();
 	};
 
 	var startLoop = function(){
 		console.log("Preparing main loop");	
 		console.log(SM);
-		gPlayer =  ObjectMgmt.createNewObject("res/character/player.jpg", "player", 0, 0, 750, 100, 100, 100, 0, 2, 100, SM.N);
-		ObjectMgmt.spawn(gPlayer);
+		gPlayer =  ObjMgmt.createNewObject("res/character/player.png", "player", 0, 0, SM.pa_x_pos + (SM.pa_width/2), SM.pa_y_pos + (SM.pa_height/2), 18, 22, 0, 2, 30, SM.N);
+		SM.gEnemies[SM.gEnemies.length] = ObjMgmt.createNewObject("res/enemy/enemy.gif", "enemy", 0, 0, SM.pa_x_pos + 10 , SM.pa_y_pos + 10 , 18, 22, 0, 2, 30, SM.N);
+
+
+		GenMap.loadMap(SM.MAP_DATA["1"]);
 		gLoop = setInterval(_mainLoop, FRAME_TIME);
 	};
 
@@ -32,7 +34,7 @@ var JSQ_Main = ( function () {
 			}
 			NPC.makeMove();
 			Movement.applyMovement(gPlayer);
-			Html.draw(gPlayer);	
+			ObjMgmt.draw(gPlayer);	
 
 			gPreviousLoopComplete = true;
 		}		
@@ -62,7 +64,6 @@ var JSQ_Main = ( function () {
 		});	
 
 		$("#btnToggleLights").click(function(event){
-			console.log("CLIOCS")
 			Html.toggleLights();
 		});
 	};
@@ -73,7 +74,7 @@ var JSQ_Main = ( function () {
 } () );
 
 JSQ_Main.init();
-console.log($('html').data('testmode'));
+console.log("Test mode: " + $('html').data('testmode'));
 if (! $('html').data('testmode')){ 
 	JSQ_Main.startLoop();
 }
