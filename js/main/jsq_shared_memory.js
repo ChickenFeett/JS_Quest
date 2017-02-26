@@ -29,8 +29,8 @@ const SM = {
 	pa_height: null, //playable area height
 	lights: true,
 	DEFAULT: {
-		HEIGHT: 100,
-		WIDTH : 100
+		HEIGHT: 20,
+		WIDTH : 20
 	},
 
 	ID_NAME : {
@@ -38,15 +38,15 @@ const SM = {
 		GRASS : "grass"
 	},
 	PATH : {
-		WALL  : "img/walls/wall.png",
-		GRASS : "img/floors/grass.png"
+		WALL  : "res/img/wall/wall.png",
+		GRASS : "res/img/floor/grass.png"
 	},
 	MAP_OBJ : { 
 		WALL   : 'w',
 		GRASS  : 'g'
 	},
 	MAP_DATA : {
-		1: "res/map_data/data1"
+		1: "res/data/map/data1"
 	}
 };
 

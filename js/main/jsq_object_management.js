@@ -7,10 +7,10 @@ var ObjMgmt = ( function () {
 
 	var createNewObject = function(imagePath, id, xMomentum, yMomentum, xPos, yPos, width, height, cycle, speed, range, direction){
 		var increment = 1;
-		while ($('#'+id).length){ // create unique ID if ID already in use
-			id = id + increment;
+		while ($('#'+(id+increment)).length){ // create unique ID if ID already in use			
 			increment++;
 		}
+		id = id + increment;
 		obj = {
 			imageObj  : null,
 			imagePath : imagePath,
@@ -25,22 +25,22 @@ var ObjMgmt = ( function () {
 			speed     : speed,
 			range     : range,
 			direction : direction
-		}; 
+		};
 		_spawn(obj);
 		return obj;
 	}
 
-	var draw = function(object){	
-		object.imageObj.style.left = object.xPos + 'px'; 
-     	object.imageObj.style.top  = object.yPos + 'px'; 
+	var draw = function(object){
+		object.imageObj.style.left = object.xPos + 'px';
+     	object.imageObj.style.top  = object.yPos + 'px';
 	}
 
 	var _spawn = function(object){
 		SM.pa_container.append("<div id='"+object.id+"' style='width:"+object.width+"px; height:"+object.height+"px;'>");
 		object.imageObj = document.getElementById(object.id);
         object.imageObj.style.position= 'absolute';
-     	object.imageObj.style.left  = object.xPos + 'px'; 
-     	object.imageObj.style.right = object.yPos + 'px'; 
+     	object.imageObj.style.left  = object.xPos + 'px';
+     	object.imageObj.style.right = object.yPos + 'px';
      	object.imageObj.style.backgroundImage = "url('"+object.imagePath+"')";
      	object.imageObj.style.position = "3px 107px";
      	SM.gCollidableObjs[SM.gCollidableObjs.length] = object; // add newly spawned object to collidable 

@@ -9,18 +9,26 @@ var GenMap = ( function () {
 		var width  = $( window ).width();
 		var height = $( window ).height();		
 		
-		ObjMgmt.createNewObject("res/walls/wall.png", "wall", 0, 0, SM.pa_x_pos + 100, SM.pa_y_pos + (SM.pa_height/2), 100, 100, 0, 0, 0, SM.N);
+		ObjMgmt.createNewObject("res/img/wall/wall.png", "wall", 0, 0, SM.pa_x_pos + 100, SM.pa_y_pos + (SM.pa_height/2), 100, 100, 0, 0, 0, SM.N);
 	};
 	var loadMap = function(mapFile){
-		$.ajax({
-			path: mapFile,
-			async: false,
+	 	$.ajax({
+	        url: mapFile,
+	        async: false,
 			success: function(result){
-				console.log("Success");
-				var i, len = result.length;
-	        	console.log(result);
+				var i, x = 0, y = 0, len = result.length;
 	        	for (i = 0; i < len; i++){
-	        		_loadObject(result[i], i); 
+	        		var char = result[i];
+	        		if (/\n/.exec(result[i])){ // some reason \r breaks shit. Char @ index 45 is \r, index 46 is \n. r = ""  wtf.
+	        			y ++;
+	        			x = 0;
+	        		}
+	        		else{
+		        		var xPos = (SM.DEFAULT.WIDTH  * x) + SM.pa_x_pos;
+		        		var yPos = (SM.DEFAULT.HEIGHT * y) + SM.pa_y_pos;
+		        		_loadObject(result[i], xPos, yPos, SM.DEFAULT.WIDTH, SM.DEFAULT.HEIGHT); 
+		        		x ++ ;
+		        	}
 	        	}
 			},
 			error: function(result){
@@ -34,14 +42,13 @@ var GenMap = ( function () {
 	 	if not supported switch case will just exit and function finishes cleanly. This function will run with '\n' 
 		characters for example and that is totally fine.
 	*/
-	var _loadObject = function(objectType, xPos, yPos){
+	var _loadObject = function(objectType, xPos, yPos, width, height){
 		switch (objectType){
 			case SM.MAP_OBJ.WALL:
-				console.log("ooohhh that's nice");
-				createNewObject(SM.PATH.WALL, SM.ID_NAME.WALL, 0, 0, xPos, yPos, SM.DEFAULT.WIDTH, SM.DEFAULT.HEIGHT, 0, 0, 0, SM.N);
+				ObjMgmt.createNewObject(SM.PATH.WALL, SM.ID_NAME.WALL, 0, 0, xPos, yPos, width, height, 0, 0, 0, SM.N);
 				break;
 			case SM.MAP_OBJ.GRASS:
-				createNewObject(SM.PATH.GRASS, SM.ID_NAME.GRASS, 0, 0, xPos, yPos, SM.DEFAULT.WIDTH, SM.DEFAULT.HEIGHT, 0, 0, 0, SM.N);
+				ObjMgmt.createNewObject(SM.PATH.GRASS, SM.ID_NAME.GRASS, 0, 0, xPos, yPos, width, height, 0, 0, 0, SM.N);
 				break;	
 		}
 	}

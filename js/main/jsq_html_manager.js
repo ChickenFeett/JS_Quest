@@ -20,9 +20,8 @@ var Html = ( function () {
 		$('#info_container').append("<img id='btnToggleLights' class='info lights button'src='img/light4.png'>");
 		$('#info_container').css("width", PLAYABLE_AREA_WIDTH);
 		SM.pa_container = $('#playable_area_container');
-		console.log(SM.pa_container.offset());
-		SM.pa_x_pos = SM.pa_container.offset().left;
-		SM.pa_y_pos = SM.pa_container.offset().top;
+		SM.pa_x_pos = SM.pa_container.offset().left + parseInt(SM.pa_container.css('borderWidth'));
+		SM.pa_y_pos = SM.pa_container.offset().top  + parseInt(SM.pa_container.css('borderWidth'));
 		SM.pa_width = SM.pa_x_pos + SM.pa_container.width();
 		SM.pa_height = SM.pa_y_pos + SM.pa_container.height();
 	};

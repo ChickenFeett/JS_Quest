@@ -208,7 +208,7 @@ var Collision = ( function () {
 			 sRight > tLeft  && 
 			 sLeft  < tRight && 
 			 sBott  > tTop   ){ 
-			ssd
+			return true;
 		}
 		return false;
 	}
