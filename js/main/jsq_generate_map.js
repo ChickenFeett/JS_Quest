@@ -19,7 +19,8 @@ var GenMap = ( function () {
 				var i, x = 0, y = 0, len = result.length;
 	        	for (i = 0; i < len; i++){
 	        		var char = result[i];
-	        		if (/\n/.exec(result[i])){ // some reason \r breaks shit. Char @ index 45 is \r, index 46 is \n. r = ""  wtf.
+	        		// Remeber lines end in "\r\n". Char @ index ([line len] - 1) is \r, index (line len) is \n. 
+	        		if (/\n/.exec(result[i])){ // therefore only check for \n, which is the final char of the line.
 	        			y ++;
 	        			x = 0;
 	        		}
