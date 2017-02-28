@@ -35,6 +35,7 @@ class Config {
 				                "<meta charset='UTF-8'>".
 				                "<title>".$this->app_name."</title>".
 				                "<link rel='stylesheet' href='css/main.css'>".
+				                "<link rel='stylesheet' href='https://code.jquery.com/qunit/qunit-2.1.1.css'>".
 				            "</head>".
 				            "<body>".
 				                "<script src='js/lib/jquery-3.1.1.min.js'></script>". # JQuery, JQuery Color & QUNit load before all other
@@ -50,6 +51,7 @@ class Config {
 				                "<script src='js/main/jsq_player_movement.js'></script>".
 				                "<script src='js/main/jsq_main.js'></script>". # Make sure to load the main last.
 				                "<script src='js/test/jsq_test.js'></script>".
+				                "<div id='qunit'></div>".
 				            "</body>".
 				        "</html>";
 

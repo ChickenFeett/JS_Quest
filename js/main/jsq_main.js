@@ -75,7 +75,4 @@ var JSQ_Main = ( function () {
 } () );
 
 JSQ_Main.init();
-console.log("Test mode: " + $('html').data('testmode'));
-if (! $('html').data('testmode')){ 
-	JSQ_Main.startLoop();
-}
+JSQ_Main.startLoop();

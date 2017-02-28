@@ -10,7 +10,7 @@ var GenMap = ( function () {
 	var loadMap = function(mapFile){
 	 	$.ajax({
 	        url: mapFile,
-	        async: false,
+	        async: false, // replace with async: true at some point and add loading screens
 			success: function(result){
 				var i, x = 0, y = 0, len = result.length;
 	        	for (i = 0; i < len; i++){

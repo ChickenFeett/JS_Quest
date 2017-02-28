@@ -2,15 +2,15 @@ console.log("Testing Initiated!")
 
 // Test all modules loaded
 QUnit.test( "Modules loaded", function( assert ) {
-  assert.ok( SM             != undefined, "Passed!" );
-  assert.ok( Collision      != undefined, "Passed!" );
-  assert.ok( GenMap         != undefined, "Passed!" );
-  assert.ok( Html           != undefined, "Passed!" );
-  assert.ok( JSQ_Main       != undefined, "Passed!" );
-  assert.ok( Movement       != undefined, "Passed!" );
-  assert.ok( NPC            != undefined, "Passed!" );
-  assert.ok( ObjMgmt        != undefined, "Passed!" );
-  assert.ok( PlayerMovement != undefined, "Passed!" );
+  assert.ok( SM             != undefined, "Shared Memory" );
+  assert.ok( Collision      != undefined, "Collision" );
+  assert.ok( GenMap         != undefined, "Generate Map" );
+  assert.ok( Html           != undefined, "HTML Manager" );
+  assert.ok( JSQ_Main       != undefined, "JS Quest Main" );
+  assert.ok( Movement       != undefined, "Movement" );
+  assert.ok( NPC            != undefined, "NPC Logic" );
+  assert.ok( ObjMgmt        != undefined, "Object Management" );
+  assert.ok( PlayerMovement != undefined, "Player Movement" );
 });
 
 
