@@ -39,7 +39,12 @@ const SM = {
 	},
 	PATH : {
 		WALL  : "res/img/wall/wall.png",
-		GRASS : "res/img/floor/grass.png"
+		GRASS_FEATURE1 : "res/img/floor/grass_feature1.png",
+		GRASS_FEATURE2 : "res/img/floor/grass_feature2.png",
+		GRASS_FEATURE3 : "res/img/floor/grass_feature3.png",
+		GRASS_FEATURE4 : "res/img/floor/grass_feature4.png",
+		GRASS_PLAIN1 : "res/img/floor/grass_plain1.png",
+		GRASS_PLAIN2 : "res/img/floor/grass_plain2.png"
 	},
 	MAP_OBJ : { 
 		WALL   : 'w',

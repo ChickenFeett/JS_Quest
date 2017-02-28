@@ -6,10 +6,6 @@ var GenMap = ( function () {
 
 	var init = function(){
 		console.log("Loading Module ".concat(MODULE_NAME));
-		var width  = $( window ).width();
-		var height = $( window ).height();		
-		
-		ObjMgmt.createNewObject("res/img/wall/wall.png", "wall", 0, 0, SM.pa_x_pos + 100, SM.pa_y_pos + (SM.pa_height/2), 100, 100, 0, 0, 0, SM.N);
 	};
 	var loadMap = function(mapFile){
 	 	$.ajax({
@@ -46,10 +42,21 @@ var GenMap = ( function () {
 	var _loadObject = function(objectType, xPos, yPos, width, height){
 		switch (objectType){
 			case SM.MAP_OBJ.WALL:
-				ObjMgmt.createNewObject(SM.PATH.WALL, SM.ID_NAME.WALL, 0, 0, xPos, yPos, width, height, 0, 0, 0, SM.N);
+				ObjMgmt.createNewObject(SM.PATH.WALL, SM.ID_NAME.WALL, 0, 0, xPos, yPos, width, height, 0, 0, 0, SM.N, 100);
 				break;
 			case SM.MAP_OBJ.GRASS:
-				ObjMgmt.createNewObject(SM.PATH.GRASS, SM.ID_NAME.GRASS, 0, 0, xPos, yPos, width, height, 0, 0, 0, SM.N);
+				rand = Math.random();
+				threshold = 0.1;
+				path = rand < .5 ? SM.PATH.GRASS_PLAIN2: SM.PATH.GRASS_PLAIN1;
+				if      (rand < threshold*1){ path = SM.PATH.GRASS_FEATURE1; }
+				else if (rand < threshold*2){ path = SM.PATH.GRASS_FEATURE2; }
+				else if (rand < threshold*3){ path = SM.PATH.GRASS_FEATURE3; }
+				else if (rand < threshold*4){ path = SM.PATH.GRASS_FEATURE4; }
+				
+				
+
+				Math.random(); SM.PATH.GRASS
+				ObjMgmt.createNewObject(path, SM.ID_NAME.GRASS, 0, 0, xPos, yPos, width, height, 0, 0, 0, SM.N, 0);
 				break;	
 		}
 	}

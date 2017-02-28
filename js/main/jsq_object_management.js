@@ -5,7 +5,7 @@ var ObjMgmt = ( function () {
 		console.log("Loading Module ".concat(MODULE_NAME));
 	}
 
-	var createNewObject = function(imagePath, id, xMomentum, yMomentum, xPos, yPos, width, height, cycle, speed, range, direction){
+	var createNewObject = function(imagePath, id, xMomentum, yMomentum, xPos, yPos, width, height, cycle, speed, range, direction, collidable){
 		var increment = 1;
 		while ($('#'+(id+increment)).length){ // create unique ID if ID already in use			
 			increment++;
@@ -24,7 +24,8 @@ var ObjMgmt = ( function () {
 			cycle     : cycle,
 			speed     : speed,
 			range     : range,
-			direction : direction
+			direction : direction,
+			collidable: collidable
 		};
 		_spawn(obj);
 		return obj;
@@ -43,7 +44,9 @@ var ObjMgmt = ( function () {
      	object.imageObj.style.right = object.yPos + 'px';
      	object.imageObj.style.backgroundImage = "url('"+object.imagePath+"')";
      	object.imageObj.style.position = "3px 107px";
-     	SM.gCollidableObjs[SM.gCollidableObjs.length] = object; // add newly spawned object to collidable 
+     	if (object.collidable){
+	     	SM.gCollidableObjs[SM.gCollidableObjs.length] = object; // add newly spawned object to collidable 
+	    }
      	draw(object);
 	}
 

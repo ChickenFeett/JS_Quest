@@ -14,7 +14,6 @@ class Config {
 				                "<meta charset='UTF-8'>".
 				                "<title>".$this->app_name."</title>".
 				                "<link rel='stylesheet' href='css/main.css'>".
-				                "<link rel='icon'       href='img/icon.png'>".
 				            "</head>".
 				            "<body>".
 				                "<script src='js/lib/jquery-3.1.1.min.js'></script>". # JQuery load before all other

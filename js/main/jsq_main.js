@@ -11,11 +11,12 @@ var JSQ_Main = ( function () {
 	var startLoop = function(){
 		console.log("Preparing main loop");	
 		console.log(SM);
-		gPlayer =  ObjMgmt.createNewObject("res/img/character/player.png", "player", 0, 0, SM.pa_x_pos + (SM.pa_width/2), SM.pa_y_pos + (SM.pa_height/2), 18, 22, 0, 2, 30, SM.N);
-		SM.gEnemies[SM.gEnemies.length] = ObjMgmt.createNewObject("res/img/enemy/enemy.gif", "enemy", 0, 0, SM.pa_x_pos + 10 , SM.pa_y_pos + 10 , 18, 22, 0, 2, 30, SM.N);
+		
+		GenMap.loadMap(SM.MAP_DATA['1']);
 
+		gPlayer =  ObjMgmt.createNewObject("res/img/character/player.png", "player", 0, 0, SM.pa_x_pos + (SM.pa_width/2), SM.pa_y_pos + (SM.pa_height/2), 18, 22, 0, 2, 30, SM.N, 100);
+		SM.gEnemies[SM.gEnemies.length] = ObjMgmt.createNewObject("res/img/enemy/enemy.gif", "enemy", 0, 0, SM.pa_x_pos + 10 , SM.pa_y_pos + 10 , 18, 22, 0, 2, 30, SM.N, 100);
 
-		GenMap.loadMap(SM.MAP_DATA["1"]);
 		gLoop = setInterval(_mainLoop, FRAME_TIME);
 	};
 
