@@ -7,4 +7,4 @@ Contributors:
 Anthony Burton
 
 Contact:
-AntonBurton36@hotmail.com or ABurto@ext.uber.com
+Antonburton36@hotmail.com
